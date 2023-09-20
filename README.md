@@ -208,7 +208,9 @@ Here X can be a Dask Array that spans multiple nodes. So with minor changes to t
 3. https://jobqueue.dask.org/en/latest/generated/dask_jobqueue.PBSCluster.html
 4. https://examples.dask.org/machine-learning/incremental.html
 5. https://examples.dask.org/machine-learning/training-on-large-datasets.html
-6. 
+6. https://examples.dask.org/machine-learning/parallel-prediction.html
+7. https://examples.dask.org/machine-learning.html
+
 
 *** 
 ## Contributers
