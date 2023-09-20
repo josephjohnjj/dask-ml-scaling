@@ -17,5 +17,8 @@ Each of these pipeline steps can possess distinct hyperparameters that significa
 
 In this tutorial, we leverage [GridSearchCV](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html) to identify the most appropriate hyperparameters for the defined pipeline. Assessing hyperparameters with GridSearchCV involves a "fit" operation that demands substantial computational resources. Therefore, we employ distributed training using Dask to efficiently distribute the computational workload.
 
+Scikit-learn uses [joblib](http://joblib.readthedocs.io/) for single-machine parallelism. This lets you train most estimators (anything that accepts an `n_jobs` parameter) using all the cores of your laptop or workstation.
+Alternatively, Scikit-Learn can use Dask for distributed parallelism.  This lets you train those estimators using all the cores of your *cluster* without significantly changing your code.  
+
 
 

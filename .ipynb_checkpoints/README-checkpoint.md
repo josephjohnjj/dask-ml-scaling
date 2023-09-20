@@ -3,17 +3,22 @@ This tutorial demonstrates how we can scale a machine learning model in Dask.
 
 ## Distributed Training
 
-Distributed Training is most useful for training large models on medium-sized datasets.You may have a large model when searching over many hyper-parameters, or when using an [ensemble method](https://scikit-learn.org/stable/modules/ensemble.html) with many individual estimators.
+Distributed Training is particularly beneficial for training large models with medium-sized datasets. This scenario becomes relevant when dealing with extensive hyperparameter exploration or employing [ensemble method](https://scikit-learn.org/stable/modules/ensemble.html) involving numerous individual estimators.
 
-To demonstrate distributed training we will be using the Newsgroup dataset available within [Scikit learn](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.fetch_20newsgroups.html). We will be building an ML pipeline that will
+To illustrate the concept of distributed training, we will utilize the [Newsgroup dataset]((https://scikit-learn.org/stable/modules/generated/sklearn.datasets.fetch_20newsgroups.html)) from Scikit-learn. Our objective is to construct a machine learning pipeline that performs the following tasks:
 
 1. [Tokenise the Text](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.HashingVectorizer.html)
 2. [Normalize the data](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfTransformer.html)
 3. [Implement an SGDClassifier](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.SGDClassifier.html)
 
-Each of these pipeline step can have different hyperparameters that determines the accuracy of the model. It a good ide to do an xxhaustive search over a list of paremeters, in each step, to determine which hyper-parameter is best suited for a model. is the process of performing hyperparameter tuning in order to determine the optimal values for a given model. 
+![](figs/pipeline.png)
 
-In this tutorial we use [GridSearchCV](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html) to determine which hyperparameters are best suited for the pipeline we have defined. Scoring hyperparameters using GridSearchCV involves a __“fit”__ and this is a very compute intensive operation. So we use distributed training using Dask for this.
+Each of these pipeline steps can possess distinct hyperparameters that significantly influence the model's accuracy. It is highly advisable to conduct a comprehensive search across a range of parameters within each step to identify the most suitable hyperparameters for the model. This process, known as hyperparameter tuning, is essential for optimizing the model's performance.
+
+In this tutorial, we leverage [GridSearchCV](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html) to identify the most appropriate hyperparameters for the defined pipeline. Assessing hyperparameters with GridSearchCV involves a "fit" operation that demands substantial computational resources. Therefore, we employ distributed training using Dask to efficiently distribute the computational workload.
+
+Scikit-learn uses [joblib](http://joblib.readthedocs.io/) for single-machine parallelism. This lets you train most estimators (anything that accepts an `n_jobs` parameter) using all the cores of your laptop or workstation.
+Alternatively, Scikit-Learn can use Dask for distributed parallelism.  This lets you train those estimators using all the cores of your *cluster* without significantly changing your code.  
 
 
 
