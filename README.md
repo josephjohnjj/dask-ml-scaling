@@ -153,6 +153,8 @@ X_train, X_test, y_train, y_test = train_test_split(X, y)
 
 ```
 
+![](figs/array.png)
+
 To incremental training we will use [SGDClassifier](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.SGDClassifier.html).
 
 ```
@@ -178,11 +180,35 @@ inc.fit(X_train, y_train, classes=classes)
 
 ```
 
+Incremental implements a fit method, which will perform one loop over the dataset, calling partial_fit over each chunk in the Dask array.
+
+***
+
+## Train Models on Large Datasets
+
+Estimators within scikit-learn are intended to operate with NumPy arrays or scipy sparse matrices and these data structures must be able to fit comfortably within the memory of a single machine. In contrast, estimators implemented in Dask-ML are optimized to effectively handle Dask Arrays and DataFrames. The advantage here is that Dask can manage much larger datasets compared to what can be accommodated in the memory of a single machine. These Dask-based data structures can be distributed across a cluster of machines, enabling efficient in-memory storage and processing of data on a much larger scale.
+
+For instance, take the case of K-Means clustering. Dask-ML provides a clone of the K-Means algorithm
+
+```
+
+km = dask_ml.cluster.KMeans(n_clusters=3, init_max_iter=2, oversampling_factor=10)
+km.fit(X)
+
+```
+
+Here X can be a Dask Array that spans multiple nodes. So with minor changes to the code we can scale the data to  multiple nodes using Dask
+
+
+
 ***
 ## References
 1. https://tutorial.dask.org/00_overview.html
 2. https://ml.dask.org
 3. https://jobqueue.dask.org/en/latest/generated/dask_jobqueue.PBSCluster.html
+4. https://examples.dask.org/machine-learning/incremental.html
+5. https://examples.dask.org/machine-learning/training-on-large-datasets.html
+6. 
 
 *** 
 ## Contributers
