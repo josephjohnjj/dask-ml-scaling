@@ -7,6 +7,10 @@ Learning outcomes of the tutorial are:
 3. Learn how to incrementally train large datasets.
 4. Learn how to use Dask high-level collections to train on large datasets.
 
+Prerequisite:
+1. Experience with Scikit Learn library
+2. Experience with Dask Dataframe and Dask Arrays 
+
 ***
 
 ## Distributed Training
@@ -52,8 +56,6 @@ parameters = {
 
 ```
 
-
-
 In this tutorial, we leverage [GridSearchCV](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html) to identify the most appropriate hyperparameters for the defined pipeline. 
 
 ```
@@ -96,7 +98,7 @@ X_train, y_train = make_classification(n_features=2, n_redundant=0, n_informativ
 
 ```
 
-__X_train__ and __y_train__ here is small enough to fit a on a single node. We will replicate this dataset multiple times with to create __X_large__ and __y_large__ and this represent the larger than memory dataset.
+_X_train_ and _y_train_ here is small enough to fit a on a single node. We will replicate this dataset multiple times with to create _X_large_ and _y_large_ and this represent the larger than memory dataset.
 
 ```
 
@@ -134,7 +136,48 @@ y_pred = clf.predict(X_large)
 
 ```
 
-One this to note here is that __ParallelPostFit__ is the meta-estimator that parallelize post-fit tasks.  It can wrap any scikit-learn estimator to provide parallel predict, predict_proba, and transform methods. It cannot parallelize the training step.
+One this to note here is that _ParallelPostFit_ is the meta-estimator that parallelize post-fit tasks.  It can wrap any scikit-learn estimator to provide parallel predict, predict_proba, and transform methods. It cannot parallelize the training step.
+***
+
+## Incremental Training
+
+When dealing with substantial datasets, it may become impractical to load the entire dataset into the computer's RAM simultaneously. Consequently, a more feasible approach involves loading the data in smaller, manageable chunks and training the model incrementally for each of these data subsets. Furthermore, in scenarios where fresh data continuously arrives over time, instead of retraining the model with the entire historical dataset, an incremental learning strategy can be employed. This approach preserves the prior knowledge of the model and allows for the incorporation of new data batches while maintaining the existing model's learning.
+
+Here we use a random dataset and split our dataset into training and testing data.
+
+
+```
+
+from dask_ml.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X, y)
+
+```
+
+To incremental training we will use [SGDClassifier](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.SGDClassifier.html).
+
+```
+
+from sklearn.linear_model import SGDClassifier
+est = SGDClassifier(loss='squared_error', penalty='l2', tol=1e-3)
+
+```
+
+The SGDClassifer is then wrapped  with the dask_ml.wrappers.Incremental meta-estimator.
+
+```
+
+from dask_ml.wrappers import Incremental
+inc = Incremental(est, scoring='accuracy')
+
+```
+_Incremental_ only does data management while leaving the actual algorithm to the underlying SSGDClassifer. Incremental implements a fit method, which will perform one loop over the dataset, calling partial_fit over each chunk in the Dask array.
+
+```
+
+inc.fit(X_train, y_train, classes=classes)
+
+```
+
 ***
 ## References
 1. https://tutorial.dask.org/00_overview.html
