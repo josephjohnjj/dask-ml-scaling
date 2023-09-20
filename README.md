@@ -197,7 +197,7 @@ km.fit(X)
 
 ```
 
-Here X can be a Dask Array that spans multiple nodes. So with minor changes to the code we can scale the data to  multiple nodes using Dask
+Here _X_ can be a Dask Array that spans multiple nodes. So with minor changes to the code we can scale the data to  multiple nodes using Dask
 
 
 
