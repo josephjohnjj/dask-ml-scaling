@@ -11,6 +11,8 @@ To illustrate the concept of distributed training, we will utilize the [Newsgrou
 2. [Normalize the data](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfTransformer.html)
 3. [Implement an SGDClassifier](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.SGDClassifier.html)
 
+![](figs/pipeline.png)
+
 Each of these pipeline steps can possess distinct hyperparameters that significantly influence the model's accuracy. It is highly advisable to conduct a comprehensive search across a range of parameters within each step to identify the most suitable hyperparameters for the model. This process, known as hyperparameter tuning, is essential for optimizing the model's performance.
 
 In this tutorial, we leverage [GridSearchCV](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html) to identify the most appropriate hyperparameters for the defined pipeline. Assessing hyperparameters with GridSearchCV involves a "fit" operation that demands substantial computational resources. Therefore, we employ distributed training using Dask to efficiently distribute the computational workload.
