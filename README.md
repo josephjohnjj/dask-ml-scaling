@@ -214,7 +214,7 @@ Here _X_ can be a Dask Array that spans multiple nodes. So with minor changes to
 
 *** 
 ## Contributers
-1. [Joseph John](https://www.josephjohn.org) 
+1. [Joseph John](https://www.josephjohn.org), Staff Scientist - Training, National Computational Infrastructure (NCI).
 
 
 
