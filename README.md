@@ -1,4 +1,4 @@
-# Scaling Machine Learning Medels Using Dask
+# Scaling Machine Learning Models Using Dask
 This tutorial demonstrates how we can scale a machine learning model in Dask.
 
 Learning outcomes of the tutorial are:
