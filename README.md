@@ -193,7 +193,9 @@ For instance, take the case of K-Means clustering. Dask-ML provides a clone of t
 ```
 
 km = dask_ml.cluster.KMeans(n_clusters=3, init_max_iter=2, oversampling_factor=10)
-km.fit(X)
+
+with joblib.parallel_backend('dask'):
+    km.fit(X)
 
 ```
 
